@@ -49,8 +49,8 @@ def new(request):
     
     
 def movie_detail(request, movie_pk):
-    # movie = object_or_404(Movie, pk=movie_pk)
-    movie = Movie.objects.get(pk=movie_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    # movie = Movie.objects.get(pk=movie_pk)
     comment_form = CommentForm()
     context = {
         'movie' : movie, 
@@ -60,10 +60,12 @@ def movie_detail(request, movie_pk):
     
 @require_POST
 def comment_create(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
     comment_form = CommentForm(request.POST)
     if comment_form.is_valid():
         comment = comment_form.save(commit=False)
-        comment.user = request.user
+        comment.user_id = request.user.pk
+        # comment.user = request.user
         comment.movie_id = movie_pk
         comment.save()
     return redirect('movies:movie_detail', movie_pk)
@@ -72,5 +74,7 @@ def comment_create(request, movie_pk):
 @login_required
 def comment_delete(request, movie_pk, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
+    if request.user != comment.user:
+        return redirect('posts:list')
     comment.delete()
     return redirect('movies:movie_detail', movie_pk)
