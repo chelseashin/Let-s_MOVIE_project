@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<h2>{{ people.username }}'s Profile</h2>
+<!--팔로우 추가-->
+<p>팔로잉 : {{ people.followings.all.count }} / 팔로워 : {{ people.followers.all.count }}</p>
+{% if user != people %}
+    {% if user in people.followers.all %}
+        <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-outline-primary">Unfollow</a>
+    {% else %}
+        <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-primary">Follow</a>
+    {% endif %}
+{% endif %}
+
+{% if people == user %}
+    <a href="{% url 'accounts:update' %}" class="badge badge-info mx-2">회원정보수정</a>
+    <a href="{% url 'accounts:profile' %}" class="badge badge-warning ">프로필수정</a>
+    <a href="{% url 'accounts:change_password' %}" class="badge badge-warning ">비밀번호변경</a>
+{% endif %}
+<hr>
+<h6>E-mail : {{ people.email }}</h6>
+<h6>Introduction : {{ people.profile.introduction }}</h6>
+<h6>Year of Birth : {{ people.profile.year_of_birth }}년</h6>
+<h6>Favorite Genre : {{ people.profile.favorite_genre }}</h6>
+{% endblock %}

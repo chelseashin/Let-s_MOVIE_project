@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}우리 영화할래요?{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<script>
+    alert("관리자 만이 영화 추가가 가능합니다.")
+</script>
+{% endif %}
+
+<h1>잉끼영화</h1>
+{% for movie in top_ten %}
+{{movie.title}}
+{% endfor %}
+<h1>너가 좋아하는 장르영화</h1>
+{% for movie in genre_movie %}
+{{movie.title}}
+{% endfor %}
+<h1>너가 태어났을때 나온 영화</h1>
+{% for movie in year_movie %}
+{{movie.title}}
+{% endfor %}
+
+
+
+
+{% endblock %}

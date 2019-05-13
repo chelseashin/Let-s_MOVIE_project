@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+{% if request.resolver_match.url_name == 'signup' %}
+    <h1>SignUp</h1>
+{% elif request.resolver_match.url_name == 'login' %}
+    <h1>LogIn</h1>
+{% endif %}
+
+    <form action="" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+        <input type="submit" value="Submit" class="btn btn-info"/>
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+    
+{% if request.resolver_match.url_name == 'update' %}
+    {% if user == request.user %}
+    <form action="{% url 'accounts:delete' %}" method="POST" onsubmit="return confirm('Are you sure ?')">
+        {% csrf_token %}
+    <button type="submit" class="btn btn-danger my-2">회원탈퇴</button>
+    </form>
+    {% endif %}
+{% endif %}
+   
+{% endblock %}
