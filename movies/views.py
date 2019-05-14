@@ -19,16 +19,13 @@ def list(request):
         context = {
             'top_ten' : top_ten,
             'genre_movie': genre_movie,
-            'year_movie' :  year_movie,
+            'year_movie' : year_movie,
         }
     else:
         context = {
             'top_ten' : top_ten,
         }
     return render(request, 'movies/list.html', context)
-
-
-    
     
 # 영화 등록 - 관리자만 가능
 @login_required

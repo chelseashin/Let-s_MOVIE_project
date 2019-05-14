@@ -8,30 +8,26 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-<h1><b>{{ movie.title }}</b>, {{ movie.release_year}}</h1>
-<hr>
 
-<h5>역대 한국개봉 영화 흥행 <b>{{ movie.rank }}</b>위</h5>
-<h5>네티즌평점 | <b>{{ movie.score }}</b>점</h5>
-<!--좋아요-->
-{% if user == request.user %}
-    <a href="{% url 'movies:like' movie.pk %}">
-        {% if user in movie.like_users.all %}
-            <i class="fas fa-heart fa-lg" style="color:crimson"></i>
-        {% else %}
-            <i class="far fa-heart fa-lg" style="color:black"></i>
-        {% endif %}
-    </a>
-{% endif %}
-<p>{{ movie.like_users.count }}명이 좋아합니다</p>
-
-<!--영화정보-->
-<div class="d-flex justify-content-align">
-    <div>
-    <img src="{{ movie.poster_url }}" alt="{{ movie.title}} 포스터 사진" height=450px width=300px>
-    </div>
-    <div class="mx-5">
+<div class="intro intro-carousel">
+    
+      <div class="carousel-item-a intro-item bg-image" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('{{ movie.poster_url }}');background-size:cover;">
+        <div class="overlay overlay-a"></div>
+        <div class="intro-content display-table">
+          <div class="table-cell">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8 ">
+                  <div class="intro-body">
+                    <h6 class="intro-title-top">{{ movie.release_year }}</h2>
+                    <h5>역대 한국개봉 영화 흥행 <b>{{ movie.rank }}</b>위</h5>
+                    <h5 class="intro-title mb-3">
+                      <span class="color-b">{{ movie.title }}</span>
+                      </h5>
+                      <h5>네티즌평점 | <b>{{ movie.score }}</b>점</h5>
+                      <p class="intro-title-top">{{ movie.distributor}}</p>
+                      <p class="intro-title-top">{{ movie.story}}</p>
+                      <div class="mx-5">
         <!--<p>개봉일자 : {{ movie.release_date }} 개봉</p> 모델에 추가해도 될 듯-->
         <h6>누적 관객수 | <b>{{ movie.audience }}</b>명</h6>
         <h6>국가 | <b>{{ movie.nationality }}</b></h6>
@@ -43,10 +39,19 @@
         <h6>배급사 | <b>{{ movie.distributor }}</b></h6>
         </div>
     </div>
-<hr>
-<h6><b>줄거리</b></h6>
-<p>{{ movie.story }}</p>
-<hr>
+                    
+                    
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
 {% if user.is_authenticated %}
 
 <!--댓글 작성하면서 평점(10점만점, 별 5개만점) 받아보자-->

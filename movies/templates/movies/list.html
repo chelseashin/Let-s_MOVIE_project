@@ -18,7 +18,6 @@
 <!--본문-->
     <!-- ****** Header Area Start ****** -->
     <div class="intro intro-carousel">
-    
       <div class="carousel-item-a intro-item bg-image" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('https://lumiere-a.akamaihd.net/v1/images/eu_avr-4_hero_r_c8d9b2e1.jpeg');background-repeat: no-repeat">
         <div class="overlay overlay-a"></div>
         <div class="intro-content display-table">
@@ -47,7 +46,7 @@
     <!-- ****** Header Area End ****** -->
 
     <!-- ****** Welcome Post Area Start ****** -->
-    <h2 class="post-headline text-center">KOREA TOP 10 Movie</h2>
+    <h2 class="post-headline text-center" style="color:white">KOREA TOP 10 Movie</h2>
     <section class="welcome-post-sliders owl-carousel">
         {% for movie in top_ten %}
         <!-- Single Slide -->
@@ -68,7 +67,8 @@
         {% endfor %}
     </section>
     
-    <h2 class="post-headline text-center">My Favorite Genre</h2>
+  
+    <h2 class="post-headline text-center mt-5" style="color:white">My Favorite Genre</h2>
     <section class="welcome-post-sliders owl-carousel">
         {% for movie in genre_movie %}
         <!-- Single Slide -->
@@ -89,7 +89,7 @@
         {% endfor %}
     </section>
     
-    <h2 class="post-headline text-center mt-5">My year of birth</h2>
+    <h2 class="post-headline text-center mt-5" style="color:white">My year of birth</h2>
     <section class="welcome-post-sliders owl-carousel">
         {% for movie in year_movie %}
         <!-- Single Slide -->
@@ -902,7 +902,8 @@
                 <div class="col-12">
                     <!-- Copywrite Text -->
                     <div class="copy_right_text text-center">
-                        <p>Copyright @2018 All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                        <p>Copyright @2019 All rights reserved</p><br>
+                        <p>This Movie Site is made with Seungju <i class="fa fa-heart-o" aria-hidden="true"></i> Chaewon by <a href="https://www.ssafy.com/" target="_blank">SSAFY</a></p>
                     </div>
                 </div>
             </div>
@@ -921,8 +922,4 @@
     <script src="{% static 'js/others/plugins.js' %}"></script>
     <!-- Active JS -->
     <script src="{% static 'js/active.js' %}"></script>
-
-
-
-
 {% endblock %}
