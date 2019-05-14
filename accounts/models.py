@@ -10,5 +10,6 @@ class Profile(models.Model):
     year_of_birth = models.TextField(blank=True)
     favorite_genre = models.CharField(max_length=40, blank=True)
     
-class User(AbstractUser):   # AbstractUser 상속받음
+class User(AbstractUser):
+    # AbstractUser 상속받음
     followers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followings')

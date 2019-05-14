@@ -123,3 +123,5 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

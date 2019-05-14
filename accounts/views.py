@@ -11,7 +11,6 @@ from .models import Profile
 # 회원가입
 def signup(request):
     if request.user.is_authenticated:
-        # if user == request.user:
         return redirect('movies:list')
 
     if request.method == "POST":

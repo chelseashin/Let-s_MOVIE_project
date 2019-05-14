@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load bootstrap4 %}
+{% block css %}
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block title %}
 {% if request.resolver_match.url_name == 'signup' %}
@@ -14,6 +19,7 @@ My Profile
 {% endblock %}
 
 {% block content %}
+<div class="container">
 {% if request.resolver_match.url_name == 'signup' %}
     <h1>SignUp</h1>
 {% elif request.resolver_match.url_name == 'login' %}
@@ -28,8 +34,8 @@ My Profile
         <input type="submit" value="Submit" class="btn btn-info"/>
         <input type="hidden" name="next" value="{{ next }}">
     </form>
-    
-    
+</div>
+
     {% if request.resolver_match.url_name == 'update' %}
         {% if user == request.user %}
         <form action="{% url 'accounts:delete' %}" method="POST" onsubmit="return confirm('Are you sure ?')">

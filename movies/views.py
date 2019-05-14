@@ -26,7 +26,11 @@ def list(request):
             'top_ten' : top_ten,
         }
     return render(request, 'movies/list.html', context)
+
+
     
+    
+# 영화 등록 - 관리자만 가능
 @login_required
 def new(request):
     if request.user.is_superuser:
@@ -44,9 +48,22 @@ def new(request):
         }
         return render(request, 'movies/forms.html', context)
     else:
-        messages.success(request, '관리자 만이 가능!', extra_tags='alert')
-        return redirect("movies:list")
+        messages.add_message(request, messages.SUCCESS, "관리자만이 삭제가 가능합니다! <a href='/movies/'>홈으로</a>")
+        return redirect('movies:list')
     
+# 영화 수정 - 관리자만 가능
+# def delete(request, post_pk):
+#     movie = get_object_or_404(Movie, pk=movie_pk)
+#     if request.user.is_superuser:
+#         
+#         return redirect('movies:movie_detail', movie_pk)
+
+# 영화 삭제 - 관리자만 가능
+# def delete(request, post_pk):
+#     movie = get_object_or_404(Movie, pk=movie_pk)
+#     if request.user.is_superuser:
+#         movie.delete()
+#         return redirect('movies:list')
     
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
@@ -62,9 +79,12 @@ def movie_detail(request, movie_pk):
 def comment_create(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     comment_form = CommentForm(request.POST)
+    score = request.POST.get('star')
+    print(score)
     if comment_form.is_valid():
         comment = comment_form.save(commit=False)
         comment.user_id = request.user.pk
+        comment.score = score
         # comment.user = request.user
         comment.movie_id = movie_pk
         comment.save()
@@ -77,4 +97,14 @@ def comment_delete(request, movie_pk, comment_pk):
     if request.user != comment.user:
         return redirect('posts:list')
     comment.delete()
+    return redirect('movies:movie_detail', movie_pk)
+    
+# 좋아요
+@login_required
+def like(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    if request.user in movie.like_users.all():
+        movie.like_users.remove(request.user)
+    else:
+        movie.like_users.add(request.user)
     return redirect('movies:movie_detail', movie_pk)

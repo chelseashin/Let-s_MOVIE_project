@@ -1,50 +1,102 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load bootstrap4 %}
 {% block title %}{{ movie.title }}{% endblock %}
+{% block css %}
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
+<div class="container">
 <h1><b>{{ movie.title }}</b>, {{ movie.release_year}}</h1>
 <hr>
 
 <h5>역대 한국개봉 영화 흥행 <b>{{ movie.rank }}</b>위</h5>
 <h5>네티즌평점 | <b>{{ movie.score }}</b>점</h5>
-<img src="{{ movie.poster_url }}" alt="{{ movie.title}} 포스터 사진" height=450px width=300px>
+<!--좋아요-->
+{% if user == request.user %}
+    <a href="{% url 'movies:like' movie.pk %}">
+        {% if user in movie.like_users.all %}
+            <i class="fas fa-heart fa-lg" style="color:crimson"></i>
+        {% else %}
+            <i class="far fa-heart fa-lg" style="color:black"></i>
+        {% endif %}
+    </a>
+{% endif %}
+<p>{{ movie.like_users.count }}명이 좋아합니다</p>
 
-<div class="my-3">
-    <!--<p>개봉일자 : {{ movie.release_date }} 개봉</p> 모델에 추가해도 될 듯-->
-    <h6>누적 관객수 | <b>{{ movie.audience }}</b>명</h6>
-    <h6>국가 | <b>{{ movie.nationality }}</b></h6>
-    <h6>장르 | <b>{{ movie.genre }}</b></h6>
-    <h6><b>감독 | {{ movie.director }}</b></h6>
-    <!--<h6><b>배우 | {{ movie.actors }}</b></h6>-->
-    <h6>상영시간 | <b>{{ movie.running_time }}</b></h6>
-    <h6>상영등급 | <b>{{ movie.grade }}</b></h6>
-    <h6>배급사 | <b>{{ movie.distributor }}</b></h6>
-    <hr>
-    <h6><b>줄거리</b></h6>
-    <p>{{ movie.story }}</p>
-</div>
+<!--영화정보-->
+<div class="d-flex justify-content-align">
+    <div>
+    <img src="{{ movie.poster_url }}" alt="{{ movie.title}} 포스터 사진" height=450px width=300px>
+    </div>
+    <div class="mx-5">
+        <!--<p>개봉일자 : {{ movie.release_date }} 개봉</p> 모델에 추가해도 될 듯-->
+        <h6>누적 관객수 | <b>{{ movie.audience }}</b>명</h6>
+        <h6>국가 | <b>{{ movie.nationality }}</b></h6>
+        <h6>장르 | <b>{{ movie.genre }}</b></h6>
+        <h6><b>감독 | {{ movie.director }}</b></h6>
+        <!--<h6><b>배우 | {{ movie.actors }}</b></h6>-->
+        <h6>상영시간 | <b>{{ movie.running_time }}</b></h6>
+        <h6>상영등급 | <b>{{ movie.grade }}</b></h6>
+        <h6>배급사 | <b>{{ movie.distributor }}</b></h6>
+        </div>
+    </div>
+<hr>
+<h6><b>줄거리</b></h6>
+<p>{{ movie.story }}</p>
 <hr>
 {% if user.is_authenticated %}
+
 <!--댓글 작성하면서 평점(10점만점, 별 5개만점) 받아보자-->
     <form action="{% url 'movies:comment_create' movie.pk %}" method="POST">
         {% csrf_token %}
-        {% bootstrap_form comment_form %}
-        <input type="submit" value="작성" class="btn btn-primary">
+        <div class="d-flex justify-conten-align">
+            <div class="stars">
+                <input class="star star-5" id="star-5" type="radio" name="star" value="10"/>
+                <label class="star star-5" for="star-5"></label>
+                <input class="star star-4" id="star-4" type="radio" name="star" value="8"/>
+                <label class="star star-4" for="star-4"></label>
+                <input class="star star-3" id="star-3" type="radio" name="star" value="6"/>
+                <label class="star star-3" for="star-3"></label>
+                <input class="star star-2" id="star-2" type="radio" name="star" value="4"/>
+                <label class="star star-2" for="star-2"></label>
+                <input class="star star-1" id="star-1" type="radio" name="star" value="2"/>
+                <label class="star star-1" for="star-1"></label>
+            </div>
+            <div style="display: inline;">
+            {% bootstrap_form comment_form %}
+            </div>
+            <input type="submit" value="작성" class="btn btn-primary">
+        </div>
     </form>
+
 {% else %}
 <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인하세요.</a>
 {% endif %}
+
+
+
 <hr>
 {% for comment in movie.comment_set.all %}
-    <p><b>{{ comment.user }}</b> | {{ comment.content }}</p>
+<div class="d-flex justify-content-between">
+    <span><b>{{ comment.score }} | {{ comment.user }}</b> | {{ comment.content }}</span>
+    <div>
+    <span>{{ comment.created_at }}</span>
     {% if comment.user == request.user %}
-        <form action="{% url 'movies:comment_delete' movie.pk comment.pk %}" method="POST">
+        <form action="{% url 'movies:comment_delete' movie.pk comment.pk %}" method="POST" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" value="X"></button>
+            <input type="submit" value="X" class="btn btn-danger">
         </form>
     {% endif %}
+    </div>
+</div>
 {% empty %}
 <p>첫번째 댓글을 작성해주세요!</p>
 {% endfor %}
+</div>
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 {% endblock %}
+
