@@ -1,0 +1,59 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block css %}
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
+    <style type="text/css">
+    h4 { color : white; }
+    .breadcumb-area { margin-top: 113px; } <
+    </style>
+{% endblock %}
+
+{% block title %}
+검색 결과 보기
+{% endblock %}
+
+{% block content %}
+
+<div class="breadcumb-area" style="background-image: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/vfPFP3W/movie-theater-projection-reels-in-elegant-looping-dark-background_q1pqoeh9__F0000.png');">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="bradcumb-title text-center">
+                    <h4>Category : {{category}}</h4>
+                    <h4>Keyword : {{word}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">
+   <div class="d-flex flex-wrap"> 
+    {% for movie in movies %}
+    <div class="instagram_gallery_item m-1">
+        <div class="welcome-single-slide">
+            <a href="{% url 'movies:movie_detail' movie.pk %}">
+                <img style="width:300px"src="{{ movie.poster_url }}" alt="{{ movie.title }} 포스터 사진"></a>
+                    <div class="project_title">
+                <div class="post-date-commnents d-flex">
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.release_year }}</a>
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.score }}점</a>
+                </div>
+                <a href="{% url 'movies:movie_detail' movie.pk %}">
+                    <h5>{{movie.title}}</h5>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+
+
+<script src="{% static 'lib/ionicons/ionicons.min.css' %}"></script>
+<script src="{% static 'lib/popper/popper.min.js' %}"></script>
+<script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

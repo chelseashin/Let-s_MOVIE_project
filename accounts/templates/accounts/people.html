@@ -4,98 +4,86 @@
 {% block css %}
     <link href="{% static 'style.css' %}" rel="stylesheet">
     <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
-    .orangelight { height:500px; }
-    li{color:white}
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR" rel="stylesheet">
+    <style type="text/css">
+      p, h3, h6, li { color : white;
+      font-family: 'Noto Sans KR', sans-serif;
+      }
+      body { height: 3000px;}
+      blockquote { 
+        margin: 0 0 0rem;
+        }
+      .breadcumb-area { margin-top: 113px; }
+    </style>
     
 {% endblock %}
 {% block title %}{{ people.username }}{% endblock %}
 
 {% block content %}
-<!-- ****** Breadcumb Area Start ****** -->
-<div class="breadcumb-nav">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'movies:list' %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">My Page</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    
 <div class="intro intro-carousel">
-    
-      <div class="carousel-item-a intro-item bg-image" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('https://images.pexels.com/photos/949587/pexels-photo-949587.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');background-repeat: no-repeat">
-        <div class="overlay overlay-a"></div>
+      <div class="carousel-item-a intro-item">
         <div class="intro-content display-table">
           <div class="table-cell">
             <div class="container">
               <div class="row">
                 <div class="col-lg-8">
                   <div class="intro-body">
-                    <p class="intro-title-top">팔로잉 | <b>{{ people.followings.all.count }}</b> 
-                      <br>팔로워 | <b>{{ people.followers.all.count }}</b></p>
-                    <h2 class="intro-title mb-4">
-                      <span class="color-b">{{ people.username }}</span> 's Profile
-                      </h2>
-                    <p class="intro-subtitle intro-price">
-                      <a href="{% url 'accounts:profile' %}"><span class="price-a">Profile Edit</span></a>
-                    </p>
+                    <p class="intro-title-top">팔로잉 | <b>{{ people.followings.all.count }}</b>   팔로워 | <b>{{ people.followers.all.count }}</b></p>
+
+                    
+                        
+                        <h2 class="intro-title mb-4"><span class="color-b">{{ people.username }}</span> 's profile</h2>
+                        
+                        <h4 style="color:white">E-mail : {{ people.email }}</h6>
+                        <h4 style="color:white">Year of Birth : {{ people.profile.year_of_birth }}년</h6>
+                        <h4 style="color:white">Favorite Genre : {{ people.profile.favorite_genre }}</h6>
+                        <h4 style="color:white">introduce:</h6>
+                        <p style="color:white">{{ people.profile.introduction }}</p>
+                        <h4 style="color:white">             </h6>
+                        
+                        {% if user != people %}
+                            {% if user in people.followers.all %}
+                                <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-outline-primary">Unfollow</a>
+                            {% else %}
+                                <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-primary">Follow</a>
+                            {% endif %}
+                        {% else %}
+                            <a  href="{% url 'accounts:profile' %}"><span class="btn btn-outline-info">프로필 수정</span></a>
+                            <a  href="{% url 'accounts:update' %}"><span class="btn btn-outline-info">회원정보 수정</span></a>
+                            <a  href="{% url 'accounts:change_password' %}"><span class="btn btn-outline-info">비빌번호 수정</span></a>
+                        {% endif %}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        
       </div>
   </div>
-  </div>
+</div>
 
 
-
-<div class="breadcumb-area" style="background-image: url(img/bg-img/breadcumb.jpg);">
-    <div class="container h-100">
-        <div class="row h-100 align-items-center">
-            <div class="col-12">
-                <div class="bradcumb-title text-center">
-                    <h2>{{ people.username }}'s Profile</h2>
-                    {% if people == user %}
-                        <div class="text-center">
-                        
-                            <a href="{% url 'accounts:update' %}" class="badge badge-info">회원정보수정</a>
-                            <a href="{% url 'accounts:profile' %}" class="badge badge-warning mx-2">프로필수정</a>
-                            <a href="{% url 'accounts:change_password' %}" class="badge badge-danger ">비밀번호변경</a>
-                        </div>
-                    {% endif %}
-                    
-                </div>
+<h3 class="text-center">{{ people.username }}님이 작성한 댓글</h3>
+<hr>
+{% if people.comment_set.count == 0 %}
+<h6 class=text-center>아직 댓글이 없어요ㅠㅠ 첫번째 댓글을 작성하러 가볼까요?</h6>
+<br>
+<div class="d-flex justify-content-center">
+  <a  href="{% url 'movies:all_movie' %}"><span class="btn btn-outline-danger">모든 영화 보러가기</span></a>
+</div>
+{% else %}
+<h6 class=text-center>훌륭해요~ {{ people.comment_set.count }}개의 댓글을 작성하였습니다!</h6>
+{% endif %}
+<div class="container">
+    {% for comment in people.comment_set.all|dictsortreversed:"pk" %}
+    <div class="col-12 my-2">
+        <div class="card">
+            <div class="card-body">
+                <blockquote>
+                  <a href="{% url 'movies:movie_detail' comment.movie.pk %}"><b>{{ comment.movie.title }}</b></a> | {{ comment.score }}점 | {{ comment.content }}
+                </blockquote>
             </div>
         </div>
     </div>
-</div>
-    
-    <!-- ****** Breadcumb Area End ****** -->
-<div class="container">
-<!--<h2>{{ people.username }}'s Profile</h2>-->
-<!--팔로우 추가-->
-<p>팔로잉 : {{ people.followings.all.count }} / 팔로워 : {{ people.followers.all.count }}</p>
-{% if user != people %}
-    {% if user in people.followers.all %}
-        <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-outline-primary">Unfollow</a>
-    {% else %}
-        <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-primary">Follow</a>
-    {% endif %}
-{% endif %}
-
-
-<hr>
-<h6>E-mail : {{ people.email }}</h6>
-<h6>Introduction : {{ people.profile.introduction }}</h6>
-<h6>Year of Birth : {{ people.profile.year_of_birth }}년</h6>
-<h6>Favorite Genre : {{ people.profile.favorite_genre }}</h6>
+    {% endfor %}
 </div>
 {% endblock %}

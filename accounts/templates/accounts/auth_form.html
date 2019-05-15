@@ -4,22 +4,37 @@
 {% block css %}
     <link href="{% static 'style.css' %}" rel="stylesheet">
     <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
+    <style type="text/css">
+        h1, label { color : white; }
+        .breadcumb-area { margin-top: 113px; }
+        body { height:1000px; }
+    </style>
 {% endblock %}
 
 {% block title %}
-{% if request.resolver_match.url_name == 'signup' %}
-SignUp
-{% elif request.resolver_match.url_name == 'login' %}
-LogIn
-{% elif request.resolver_match.url_name == 'update' %}
-My Profile
-{% elif request.resolver_match.url_name == 'profile_update' %}
-My Profile
-{% endif %}
+    {% if request.resolver_match.url_name == 'signup' %}
+    SignUp
+    {% elif request.resolver_match.url_name == 'login' %}
+    LogIn
+    {% else %}
+    My Profile
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="breadcumb-area" style="background-image: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/vfPFP3W/movie-theater-projection-reels-in-elegant-looping-dark-background_q1pqoeh9__F0000.png');">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="bradcumb-title text-center">
+                    <h2>Welcome!</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3">
 {% if request.resolver_match.url_name == 'signup' %}
     <h1>SignUp</h1>
 {% elif request.resolver_match.url_name == 'login' %}
@@ -27,7 +42,7 @@ My Profile
 {% elif request.resolver_match.url_name == 'update' %}
     <h1>회원정보수정</h1>
 {% endif %}
-
+<hr>
     <form action="" method="POST">
     {% csrf_token %}
     {% bootstrap_form form %}
@@ -35,8 +50,8 @@ My Profile
         <input type="hidden" name="next" value="{{ next }}">
     </form>
 </div>
-
-    {% if request.resolver_match.url_name == 'update' %}
+    <div class="container">
+        {% if request.resolver_match.url_name == 'update' %}
         {% if user == request.user %}
         <form action="{% url 'accounts:delete' %}" method="POST" onsubmit="return confirm('Are you sure ?')">
             {% csrf_token %}
@@ -44,5 +59,21 @@ My Profile
         </form>
         {% endif %}
     {% endif %}
+    </div>
+    
+<!-- ****** Footer Menu Area  ****** -->
+    <footer class="footer_area fixed-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Copywrite Text -->
+                    <div class="copy_right_text text-center">
+                        <p>Copyright @2019 All rights reserved</p><br>
+                        <p>This Movie Site is made with Seungju <i class="fa fa-heart-o" aria-hidden="true"></i> Chaewon by <a href="https://www.ssafy.com/" target="_blank">SSAFY</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     
 {% endblock %}

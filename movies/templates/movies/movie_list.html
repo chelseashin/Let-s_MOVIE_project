@@ -1,0 +1,88 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block css %}
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
+    <style type="text/css">
+    h5, p { color : white; 
+            font-family: 'Noto Sans KR', sans-serif;    
+        }
+    .pagination { background-color: gray; }
+    .breadcumb-area { margin-top: 113px; }
+    body { height: 2000px;}
+    </style>
+{% endblock %}
+
+{% block title %}
+모든 영화 보기
+{% endblock %}
+
+{% block content %}
+<div class="breadcumb-area" style="background-image: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/vfPFP3W/movie-theater-projection-reels-in-elegant-looping-dark-background_q1pqoeh9__F0000.png');">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="bradcumb-title text-center">
+                    <h2>All movie</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">
+   <div class="d-flex flex-wrap"> 
+    {% for movie in movies %}
+    <div class="instagram_gallery_item m-1">
+        <div class="welcome-single-slide">
+            <a href="{% url 'movies:movie_detail' movie.pk %}">
+                <img style="width:300px"src="{{ movie.poster_url }}" alt="{{ movie.title }} 포스터 사진"></a>
+                    <div class="project_title">
+                <div class="post-date-commnents d-flex">
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.release_year }}</a>
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.score }}점</a>
+                </div>
+                <a href="{% url 'movies:movie_detail' movie.pk %}">
+                    <h5>{{movie.title}}</h5>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+
+<div class="pagination d-flex justify-content-center">
+    <span class="step-links">
+        {% if movies.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ movies.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ movies.number }} of {{ movies.paginator.num_pages }}.
+        </span>
+
+        {% if movies.has_next %}
+            <a href="?page={{ movies.next_page_number }}">next</a>
+            <a href="?page={{ movies.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+<!-- ****** Footer Menu Area  ****** -->
+    <footer class="footer_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Copywrite Text -->
+                    <div class="copy_right_text text-center">
+                        <p>Copyright @2019 All rights reserved</p><br>
+                        <p>This Movie Site is made with Seungju <i class="fa fa-heart-o" aria-hidden="true"></i> Chaewon by <a href="https://www.ssafy.com/" target="_blank">SSAFY</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}

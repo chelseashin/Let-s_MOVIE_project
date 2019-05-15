@@ -1,19 +1,19 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.contrib import messages
 from .forms import CommentForm, MovieForm
-from .models import Movie, Comment
+from .models import Movie, Comment, Actor
 from accounts.models import Profile
-
 
 # Create your views here.
 def list(request):
     top_ten = Movie.objects.all()[0:10]
-    if request.user.is_authenticated:
+    if request.user.is_authenticated or request.user.is_superuser:
         user = get_object_or_404(Profile, user = request.user)
-        
         genre_movie = Movie.objects.filter(genre=user.favorite_genre)
         year_movie = Movie.objects.filter(release_year=user.year_of_birth)
         context = {
@@ -26,6 +26,17 @@ def list(request):
             'top_ten' : top_ten,
         }
     return render(request, 'movies/list.html', context)
+    
+# 모든 영화보기 25개씩 pagination
+def all_movie(request):
+    movie_list = Movie.objects.all()
+    paginator = Paginator(movie_list, 24)
+    page = request.GET.get('page')
+    movies = paginator.get_page(page)
+    context = {
+        'movies' : movies, 
+    }
+    return render(request, 'movies/movie_list.html', context)
     
 # 영화 등록 - 관리자만 가능
 @login_required
@@ -64,6 +75,7 @@ def new(request):
     
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
+    print(movie.actors.all)
     # movie = Movie.objects.get(pk=movie_pk)
     comment_form = CommentForm()
     context = {
@@ -75,17 +87,20 @@ def movie_detail(request, movie_pk):
 @require_POST
 def comment_create(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
-    comment_form = CommentForm(request.POST)
-    score = request.POST.get('star')
-    print(score)
-    if comment_form.is_valid():
-        comment = comment_form.save(commit=False)
-        comment.user_id = request.user.pk
-        comment.score = score
-        # comment.user = request.user
-        comment.movie_id = movie_pk
-        comment.save()
-    return redirect('movies:movie_detail', movie_pk)
+    if len(movie.comment_set.filter(user_id = request.user.id)) == 0:
+        comment_form = CommentForm(request.POST)
+        score = request.POST.get('star')
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user_id = request.user.pk
+            comment.score = score
+            # comment.user = request.user
+            comment.movie_id = movie_pk
+            comment.save()
+        return redirect('movies:movie_detail', movie_pk)
+    else:
+        messages.add_message(request, messages.WARNING, "이미 댓글을 작성 하셨습니다.")
+        return redirect('movies:movie_detail', movie_pk)
  
 @require_POST
 @login_required
@@ -105,3 +120,43 @@ def like(request, movie_pk):
     else:
         movie.like_users.add(request.user)
     return redirect('movies:movie_detail', movie_pk)
+        
+@login_required
+def search(request):
+    category = request.GET.get('category')
+    word = request.GET.get('word')
+    print(category)
+    
+    if category == '영화 제목':
+        movies =  Movie.objects.filter(title=word)
+    elif category == '영화 감독':
+        movies =  Movie.objects.filter(director=word)
+    elif category == '영화 배우':
+        actor =  Actor.objects.get(name=word)
+        movies = actor.movies.all
+        print(movies)
+    elif category == '영화 장르':
+        movies =  Movie.objects.filter(genre=word)
+    context = {
+        'category':category,
+        'word':word,
+        'movies':movies,
+    }
+    return render(request, 'movies/search_movie.html',context)
+    
+def click_keyword(request, category, word):
+    if category == '영화 감독':
+        movies =  Movie.objects.filter(director=word)
+    elif category == '영화 배우':
+        actor =  Actor.objects.get(name=word)
+        movies = actor.movies.all
+        print(movies)
+    elif category == '영화 장르':
+        movies =  Movie.objects.filter(genre=word)
+    context = {
+        'category':category,
+        'word':word,
+        'movies':movies,
+    }
+    return render(request, 'movies/search_movie.html',context)
+    

@@ -5,7 +5,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, CustomUserChangeForm, ProfileForm
-from .models import Profile
+from .models import Profile, User
 
 # Create your views here.
 # 회원가입
@@ -107,6 +107,7 @@ def user_profile(request, user_name):
     return render(request, 'accounts/people.html', context)
     
 # 팔로우
+@login_required
 def follow(request, user_pk):
     people = get_object_or_404(get_user_model(), pk=user_pk)
     if request.user in people.followers.all():
@@ -114,3 +115,14 @@ def follow(request, user_pk):
     else:
         people.followers.add(request.user)
     return redirect('accounts:user_profile', people.username)
+    
+# followings
+@login_required
+def followings(request):
+    
+    profiles = Profile.objects.filter(user__in = request.user.followings.all()).order_by('-pk')
+    context={
+        'profiles': profiles,
+    }
+    
+    return render(request, 'accounts/followings.html',context)
