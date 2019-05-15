@@ -159,4 +159,24 @@ def click_keyword(request, category, word):
         'movies':movies,
     }
     return render(request, 'movies/search_movie.html',context)
+  
+  
+    
+def comment_update(request, comment_pk):
+    comment  = get_object_or_404(Comment, pk=comment_pk)
+    if request.method == "POST":
+        form = CommentForm(instance=comment, data=request.POST)
+        if form.is_valid():
+            score = request.POST.get('star')
+            comment = form.save(commit=False)
+            comment.score = score
+            comment.save()
+            return redirect('movies:movie_detail', comment.id )
+    else:
+        form = CommentForm(instance=comment)
+    context = {
+        'form':form,
+        }
+            
+    return render(request, 'movies/forms.html', context)
     

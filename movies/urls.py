@@ -9,8 +9,10 @@ urlpatterns = [
     path('search/', views.search, name='search'), 
     path('<int:movie_pk>/like/', views.like, name='like'), 
     path('new/', views.new, name='new'), 
+    path('<int:comment_pk>/comment_update/', views.comment_update, name='comment_update'), 
     path('<int:movie_pk>/comment/<int:comment_pk>/delete/', views.comment_delete, name='comment_delete'), 
-    path('<int:movie_pk>/comment/', views.comment_create, name='comment_create'), 
+    path('<int:movie_pk>/comment/', views.comment_create, name='comment_create'),
+
     path('<int:movie_pk>/', views.movie_detail, name='movie_detail'), 
     path('', views.list, name="list"),
     ]

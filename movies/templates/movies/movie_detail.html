@@ -149,7 +149,7 @@
       <div> 
       
       {% if comment.user == user %}
-      <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentUpdate">V</button>
+      <a class="btn btn-success btn-sm" href="{% url 'movies:comment_update' comment.pk  %}">수정하기</a>
         <form action="{% url 'movies:comment_delete' movie.pk comment.pk %}" method="POST" style="display: inline;">
           {% csrf_token %}
           <input type="submit" value="X" class="btn btn-danger btn-sm">
@@ -163,29 +163,6 @@
 <p>첫번째 댓글을 작성해주세요!</p>
 {% endfor %}
 </div>
-
-
-
-
-<div class="modal fade" id="commentUpdate" tabindex="-1" role="dialog"aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">댓글 수정하기</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body">
-        ...ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"> 
