@@ -1,5 +1,6 @@
 import js2py
 from js2py import require
+from npm.finders import npm_install
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -59,7 +60,6 @@ def list(request):
     # rePY = js2py.eval_js(reJS)
     
     # print(rePY(data,request.user.id))
-    print(data)
     
     js2py.translate_file('example.js', 'example.py')
     

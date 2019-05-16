@@ -12,8 +12,9 @@ var.registers(['javascriptCode'])
 @Js
 def PyJsHoisted_javascriptCode_(data, user, this, arguments, var=var):
     var = Scope({'data':data, 'user':user, 'this':this, 'arguments':arguments}, var)
-    var.registers(['train', 'cf', 'gt', 'test', 'data', 'user', 'movie', 'i'])
+    var.registers(['movie', 'user', 'cf', 'test', 'train', 'gt', 'i', 'data'])
     var.put('movie', var.get('data'))
+    var.get('console').callprop('log', var.get('data'))
     var.put('train', Js([]))
     var.put('test', Js([]))
     #for JS loop

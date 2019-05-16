@@ -1,7 +1,7 @@
 function javascriptCode(data, user){
-    const {CF} = js2py.require('nodeml')
+    // const {sample, CF, evaluation} = require('nodeml');
     const movie = data
-
+    console.log(data)
     let train = [], test = [];
     for (let i = 0; i < movie.length; i++) {
         if (Math.random() > 0.8) test.push(movie[i]);

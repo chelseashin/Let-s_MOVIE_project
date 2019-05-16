@@ -1,0 +1,24 @@
+{
+  "name": "MOVIE95",
+  "version": "1.0.0",
+  "description": "",
+  "main": "example.js",
+  "dependencies": {
+    "nodeml": "^0.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chelseashin/movie_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chelseashin/movie_project/issues"
+  },
+  "homepage": "https://github.com/chelseashin/movie_project#readme"
+}
