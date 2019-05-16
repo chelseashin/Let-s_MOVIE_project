@@ -6,6 +6,12 @@
     <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
     <style type="text/css">
     body { height: 2000px;}
+    .wow { border: 1px dashed coral;
+          padding-top: 10px;
+
+
+          padding-left: 10px;
+    }
     </style>
 {% endblock %}
 
@@ -19,187 +25,99 @@ followings
 <section class="archive-area section_padding_80 text-center">
         <div class="container">
             <div class="row">
-                
                 {% for profile in profiles %}
-
-                <!-- Single Post -->
-                <a herf="{% url 'accounts:user_profile' profile.user %}" class="col-12 col-md-6 col-lg-4 mx-2 card" >
-                    <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="single-post wow fadeInUp padding-1" data-wow-delay="0.1s">
                         <!-- Post Thumb -->
                         <div class="post-thumb">
-                          <img src="https://www.gravatar.com/avatar/{{ profile.user.email|makemd5 }}?s=200" alt="gravatar">
-
+                            <img src="https://www.gravatar.com/avatar/{{ profile.user.email|makemd5 }}?s=200" alt="gravatar">
                         </div>
-                        <div class="post-comment-share-area d-flex">
-                                    <!-- Post Favourite -->
-                                    <div class="post-favourite">
-                                        <i class="fa fa-heart-o" aria-hidden="true">10</i> 
-                                    </div>
-                                    <!-- Post Comments -->
-                                    <div class="post-comments mx-1">
-                                        <i class="fa fa-comment-o" aria-hidden="true">12</i>
-                                    </div>
-                                </div>
                         <!-- Post Content -->
                         <div class="post-content">
                             <div class="post-meta d-flex">
                                 <div class="post-author-date-area d-flex">
                                     <!-- Post Author -->
                                     <div class="post-author">
-                                        {{ profile.user }}
+                                        <a href="{% url 'accounts:user_profile' profile.user %}"> {{ profile.user }}</a>
                                     </div>
                                     <!-- Post Date -->
                                     <div class="post-date">
-                                        {{ profile.nickname }}
+                                        <a href="{% url 'accounts:user_profile' profile.user %}"> {{ profile.nickname }}</a>
                                     </div>
                                 </div>
                                 <!-- Post Comment & Share Area -->
-                                
+                                <div class="post-comment-share-area d-flex">
+                                    <!-- Post Favourite -->
+                                    <div class="post-favourite">
+                                        <a href="{% url 'accounts:user_profile' profile.user %}"><i class="fa fa-heart-o" aria-hidden="true"></i>{{ profile.user.like_movies.count }}</a>
+                                    </div>
+                                    <!-- Post Comments -->
+                                    <div class="post-comments">
+                                        <a href="{% url 'accounts:user_profile' profile.user %}"><i class="fa fa-comment-o" aria-hidden="true"></i>{{ profile.user.comment_set.count }}</a>
+                                    </div>
+                                </div>
                             </div>
-                        <h6 class="post-headline">{{profile.introduction}}</h6>
+                            <a href="{% url 'accounts:user_profile' profile.user %}">
+                                <h4 class="post-headline">{{ profile.introduction }}</h4>
+                            </a>
                         </div>
                     </div>
-                </a>
+                </div>
                 {% endfor %}
             </div>
         </div>
     </section>
 
-<!-- ****** Instagram Area Start ****** -->
-    <div class="instargram_area owl-carousel section_padding_100_0 clearfix" id="portfolio">
 
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/1.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/2.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/3.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/4.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/5.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/6.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/1.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Instagram Item -->
-        <div class="instagram_gallery_item">
-            <!-- Instagram Thumb -->
-            <img src="img/instagram-img/2.jpg" alt="">
-            <!-- Hover -->
-            <div class="hover_overlay">
-                <div class="yummy-table">
-                    <div class="yummy-table-cell">
-                        <div class="follow-me text-center">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 
 <script src="{% static 'lib/ionicons/ionicons.min.css' %}"></script>
 <script src="{% static 'lib/popper/popper.min.js' %}"></script>
 <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}
+
+
+{% for profile in profiles %}
+
+<!-- Single Post -->
+<a herf="{% url 'accounts:user_profile' profile.user %}" class="col-12 col-md-6 col-lg-4 mx-2 card" >
+<div class="single-post wow fadeInUp" data-wow-delay="0.1s">
+    <!-- Post Thumb -->
+    <div class="post-thumb">
+      <img src="https://www.gravatar.com/avatar/{{ profile.user.email|makemd5 }}?s=200" alt="gravatar">
+
+    </div>
+    <div class="post-comment-share-area d-flex">
+                <!-- Post Favourite -->
+                <div class="post-favourite">
+                    <i class="fa fa-heart-o" aria-hidden="true">{{ profile.like_movies.count }}</i> 
+                </div>
+                <!-- Post Comments -->
+                <div class="post-comments mx-1">
+                    <i class="fa fa-comment-o" aria-hidden="true">{{ profile.comment_set.count }}</i>
+                </div>
+            </div>
+    <!-- Post Content -->
+    <div class="post-content">
+        <div class="post-meta d-flex">
+            <div class="post-author-date-area d-flex">
+                <!-- Post Author -->
+                <div class="post-author">
+                    {{ profile.user }}
+                </div>
+                <!-- Post Date -->
+                <div class="post-date">
+                    {{ profile.nickname }}
+                </div>
+            </div>
+            <!-- Post Comment & Share Area -->
+            
+        </div>
+    <h6 class="post-headline">{{profile.introduction}}</h6>
+    </div>
+</div>
+</a>
+{% endfor %}

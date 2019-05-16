@@ -55,7 +55,7 @@
                           <h6>개봉 | {{ movie.release_year }}</h6>
                           
                           <h6>국가 | <b>{{ movie.nationality }}</b></h6>
-                          <h6>장르 | <a href="{% url 'movies:click_keyword' '영화 장르' movie.genre %}">{{ movie.genre }}</a></h6>
+                          <h6>장르 | {{ movie.genre }}</h6>
                           <h6>감독 | <a href="{% url 'movies:click_keyword' '영화 감독' movie.director %}">{{ movie.director }}</a></h6>
                           <h6>배우 |  
                           {% for actor in movie.actors.all reversed %}

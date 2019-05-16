@@ -97,6 +97,8 @@
 </div>
 <hr>
 <h3 class="text-center mt-3">{{ people.username }}님이 좋아요한 영화</h3>
+<h6 class=text-center>{{ people.like_movies.count }}개의 영화에 좋아요를 눌렀습니다!</h6>
+
 <div class="mt-5">
    <div class="d-flex flex-wrap"> 
     {% for movie in people.like_movies.all %}

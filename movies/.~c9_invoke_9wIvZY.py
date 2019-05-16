@@ -1,4 +1,6 @@
 import js2py
+from js2py import require
+from npm.finders import npm_install
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -6,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib import messages
-from django.db.models import Q
 from .forms import CommentForm, MovieForm
 from .models import Movie, Comment, Actor
 from accounts.models import Profile
@@ -15,10 +16,12 @@ from accounts.models import Profile
 def list(request):
     top_ten = Movie.objects.all()[0:10]
     if request.user.is_authenticated or request.user.is_superuser:
+        comment = Comment.objects.filter(user_id=request.user.id, score__gte=6)
+        context.update(dict(commet=comment))
+        print(comment)
         user = get_object_or_404(Profile, user = request.user)
         genre_movie = Movie.objects.filter(genre=user.favorite_genre)
         year_movie = Movie.objects.filter(release_year=user.year_of_birth)
-        
         context = {
             'top_ten' : top_ten,
             'genre_movie': genre_movie,
@@ -32,12 +35,11 @@ def list(request):
         
    
     # data = []
-    # all_movie = Movie.objects.all()
     # for movie in all_movie:
     #     for comment in movie.comment_set.all():
     #         data.append({'movie_id':str(movie.id), 'user_id':str(comment.user_id),'rating':str(comment.score)})
-            
     # js2py.translate_file('example.js', 'example.py')
+    comment = Comment.objects.filter
     # from example import example
     # print(example.javascriptCode(data, 3))
     
