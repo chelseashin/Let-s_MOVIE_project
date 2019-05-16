@@ -25,7 +25,7 @@ SECRET_KEY = ')+709xrvqq9r*c9nnt=t3@31cyqc3$^l)_9%z%uv3l&f5t$=ak'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['MOVIE95-dev.ap-northeast-2.elasticbeanstalk.com']
 
 
 # Application definition
