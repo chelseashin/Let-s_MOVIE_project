@@ -25,8 +25,8 @@ SECRET_KEY = ')+709xrvqq9r*c9nnt=t3@31cyqc3$^l)_9%z%uv3l&f5t$=ak'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ['MOVIE95-dev.ap-northeast-2.elasticbeanstalk.com']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['MOVIE95-dev.ap-northeast-2.elasticbeanstalk.com']
 
 
 # Application definition
@@ -122,11 +122,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_DIRS = []
 #     ]
 
 AUTH_USER_MODEL = 'accounts.User'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-# STATICFILES_FINDERS = ['npm.finders.NpmFinder',]
