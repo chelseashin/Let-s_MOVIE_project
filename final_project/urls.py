@@ -6,7 +6,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('accounts/', include('accounts.urls')), 
-    # path('movies/', include('movies.urls')), 
-    path('', include('movies.urls')), 
+    path('movies/', include('movies.urls')), 
+    # path('', include('movies.urls')), 
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

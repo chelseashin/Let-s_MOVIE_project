@@ -34,6 +34,9 @@ def list(request):
     for movie in all_movie:
         for comment in movie.comment_set.all():
             data.append({'movie_id':str(movie.id), 'user_id':str(comment.user_id),'rating':str(comment.score)})
+            
+            
+            
     
     # reJS = '''
     # function javascriptCode(data, user){
