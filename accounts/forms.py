@@ -35,4 +35,5 @@ class ProfileForm(forms.ModelForm):
             'year_of_birth': forms.Select(choices=BIRTH_YEAR_CHOICE),
             'favorite_genre': forms.Select(choices=FAVORITE_GENRE_CHOICE),
         }
+
         

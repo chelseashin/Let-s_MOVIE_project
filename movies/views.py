@@ -1,3 +1,5 @@
+import js2py
+from js2py import require
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -25,6 +27,47 @@ def list(request):
         context = {
             'top_ten' : top_ten,
         }
+        
+    all_movie = Movie.objects.all()
+    data = []
+    for movie in all_movie:
+        for comment in movie.comment_set.all():
+            data.append({'movie_id':str(movie.id), 'user_id':str(comment.user_id),'rating':str(comment.score)})
+    
+    # reJS = '''
+    # function javascriptCode(data, user){
+    #     const movie = data;
+
+    #     let train = [], test = [];
+    #     for (let i = 0; i < movie.length; i++) {
+    #         if (Math.random() > 0.8) test.push(movie[i]);
+    #         else train.push(movie[i]);
+    #     }
+
+    #     const cf = new CF();
+
+    #     cf.maxRelatedItem = 10;
+    #     cf.maxRelatedUser = 10;
+
+    #     cf.train(train, 'user_id', 'movie_id', 'rating');
+
+    #     let gt = cf.gt(test, 'user_id', 'movie_id', 'rating');
+        
+    #     return cf.recommendToUser(user,10)
+    # }
+    # '''
+    # rePY = js2py.eval_js(reJS)
+    
+    # print(rePY(data,request.user.id))
+    print(data)
+    
+    js2py.translate_file('example.js', 'example.py')
+    
+    from example import example
+    print(example.javascriptCode(data, 3))
+    
+    
+
     return render(request, 'movies/list.html', context)
     
 # 모든 영화보기 25개씩 pagination
@@ -84,7 +127,9 @@ def movie_detail(request, movie_pk):
     }
     return render(request, 'movies/movie_detail.html', context)
     
+# 댓글
 @require_POST
+@login_required
 def comment_create(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     if len(movie.comment_set.filter(user_id = request.user.id)) == 0:
@@ -101,6 +146,25 @@ def comment_create(request, movie_pk):
     else:
         messages.add_message(request, messages.WARNING, "이미 댓글을 작성 하셨습니다.")
         return redirect('movies:movie_detail', movie_pk)
+ 
+@login_required
+def comment_update(request, comment_pk):
+    comment  = get_object_or_404(Comment, pk=comment_pk)
+    if request.method == "POST":
+        form = CommentForm(instance=comment, data=request.POST)
+        if form.is_valid():
+            score = request.POST.get('star')
+            comment = form.save(commit=False)
+            comment.score = score
+            comment.save()
+            return redirect('movies:movie_detail', comment.movie_id )
+    else:
+        form = CommentForm(instance=comment)
+    context = {
+        'form':form,
+        'comment':comment
+    }
+    return render(request, 'movies/forms.html', context)
  
 @require_POST
 @login_required
@@ -125,7 +189,7 @@ def like(request, movie_pk):
 def search(request):
     category = request.GET.get('category')
     word = request.GET.get('word')
-    print(category)
+    # print(category)
     
     if category == '영화 제목':
         movies =  Movie.objects.filter(title=word)
@@ -160,23 +224,5 @@ def click_keyword(request, category, word):
     }
     return render(request, 'movies/search_movie.html',context)
   
-  
-    
-def comment_update(request, comment_pk):
-    comment  = get_object_or_404(Comment, pk=comment_pk)
-    if request.method == "POST":
-        form = CommentForm(instance=comment, data=request.POST)
-        if form.is_valid():
-            score = request.POST.get('star')
-            comment = form.save(commit=False)
-            comment.score = score
-            comment.save()
-            return redirect('movies:movie_detail', comment.id )
-    else:
-        form = CommentForm(instance=comment)
-    context = {
-        'form':form,
-        }
-            
-    return render(request, 'movies/forms.html', context)
+
     

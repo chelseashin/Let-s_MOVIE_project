@@ -1,9 +1,12 @@
 {% extends 'base.html' %} 
 {% load static %} 
-
+{% load gravatar %}
 {% block css %}
     <link href="{% static 'style.css' %}" rel="stylesheet">
     <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
+    <style type="text/css">
+    body { height: 2000px;}
+    </style>
 {% endblock %}
 
 {% block title %}
@@ -24,7 +27,8 @@ followings
                     <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
                         <!-- Post Thumb -->
                         <div class="post-thumb">
-                            <img class="m-2"src="data:image/jpeg;base64,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" alt="">
+                          <img src="https://www.gravatar.com/avatar/{{ profile.user.email|makemd5 }}?s=200" alt="gravatar">
+
                         </div>
                         <div class="post-comment-share-area d-flex">
                                     <!-- Post Favourite -->
@@ -42,21 +46,17 @@ followings
                                 <div class="post-author-date-area d-flex">
                                     <!-- Post Author -->
                                     <div class="post-author">
-                                        {{profile.user}}
+                                        {{ profile.user }}
                                     </div>
                                     <!-- Post Date -->
                                     <div class="post-date">
-                                        {{profile.nickname}}
+                                        {{ profile.nickname }}
                                     </div>
                                 </div>
                                 <!-- Post Comment & Share Area -->
                                 
                             </div>
-                            
-                
-                                <h4 class="post-headline">{{profile.introduction}}</h4>
-                          
-                            
+                        <h6 class="post-headline">{{profile.introduction}}</h6>
                         </div>
                     </div>
                 </a>
@@ -64,6 +64,139 @@ followings
             </div>
         </div>
     </section>
+
+<!-- ****** Instagram Area Start ****** -->
+    <div class="instargram_area owl-carousel section_padding_100_0 clearfix" id="portfolio">
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/1.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/2.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/3.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/4.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/5.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/6.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/1.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instagram Item -->
+        <div class="instagram_gallery_item">
+            <!-- Instagram Thumb -->
+            <img src="img/instagram-img/2.jpg" alt="">
+            <!-- Hover -->
+            <div class="hover_overlay">
+                <div class="yummy-table">
+                    <div class="yummy-table-cell">
+                        <div class="follow-me text-center">
+                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i> Follow me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 <script src="{% static 'lib/ionicons/ionicons.min.css' %}"></script>
 <script src="{% static 'lib/popper/popper.min.js' %}"></script>

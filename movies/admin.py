@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ['rank', 'title', 'release_year', 'audience', 'nationality',]
+    list_display = ['id','rank', 'title', 'release_year', 'audience', 'nationality',]
     # 'distributor', 'score', 'director', 'actor1', 'actor2', 'actor3', 'genre', 'running_time', 'grade', 'story', 'poster_url']
     # list_display = '__all__'
 admin.site.register(Movie, MovieAdmin)

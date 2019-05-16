@@ -7,7 +7,7 @@
 <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR" rel="stylesheet">
 <style type="text/css">
-  a, h5, h6 { color : white; 
+  a, p, h5, h6 { color : white; 
               font-family: 'Noto Sans KR', sans-serif;
               margin: 0 0 0rem;
             }
@@ -35,9 +35,8 @@
                       </div>
                       <div class="my-5 ml-3">
                         <h5>역대 한국개봉 영화 흥행 <b>{{ movie.rank }}</b>위</h5>
-                        <h5 class="intro-title mb-3"><span class="color-b">{{ movie.title }}</span></h5>
+                        <h6 class="intro-title mb-3"><span class="color-b">{{ movie.title }}</span></h6>
                         <!-- 좋아요 -->
-
                         <a href="{% url 'movies:like' movie.pk %}" class="card-link">
                           {% if user in movie.like_users.all %}
                             <i class="fas fa-heart fa-lg" style="color:crimson"></i>
@@ -116,7 +115,7 @@
 
 <!--alert messages-->
 {% if messages %}
-<h1>ddddddddddddddddddddd</h1>
+<h1>메세지</h1>
 <div class="messages">
 {% for message in messages %}
 <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
@@ -149,7 +148,9 @@
       <div> 
       
       {% if comment.user == user %}
-      <a class="btn btn-success btn-sm" href="{% url 'movies:comment_update' comment.pk  %}">수정하기</a>
+      <a class="btn btn-success btn-sm" href="{% url 'movies:comment_update' comment.pk  %}">수정</a>
+      
+      
         <form action="{% url 'movies:comment_delete' movie.pk comment.pk %}" method="POST" style="display: inline;">
           {% csrf_token %}
           <input type="submit" value="X" class="btn btn-danger btn-sm">
@@ -163,6 +164,8 @@
 <p>첫번째 댓글을 작성해주세요!</p>
 {% endfor %}
 </div>
+
+
 
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"> 

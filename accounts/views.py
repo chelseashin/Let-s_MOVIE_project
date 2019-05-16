@@ -1,3 +1,4 @@
+import hashlib
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm,PasswordChangeForm
 from django.contrib.auth import login as auth_login
@@ -103,7 +104,7 @@ def profile(request):
 # 유저페이지
 def user_profile(request, user_name):
     people = get_object_or_404(get_user_model(), username=user_name)
-    context = {'people': people, }
+    context = {'people': people,}
     return render(request, 'accounts/people.html', context)
     
 # 팔로우

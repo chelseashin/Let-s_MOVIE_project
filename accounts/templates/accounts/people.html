@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load bootstrap4 %}
+{% load gravatar %}
 {% block css %}
     <link href="{% static 'style.css' %}" rel="stylesheet">
     <link href="{% static 'css/responsive/responsive.css' %}" rel="stylesheet">
@@ -9,11 +10,14 @@
       p, h3, h6, li { color : white;
       font-family: 'Noto Sans KR', sans-serif;
       }
-      body { height: 3000px;}
+      body { height: 4000px;}
       blockquote { 
         margin: 0 0 0rem;
         }
       .breadcumb-area { margin-top: 113px; }
+      /*.avatar {*/
+      /*  border-radius: 50%;*/
+      /*}*/
     </style>
     
 {% endblock %}
@@ -26,13 +30,14 @@
           <div class="table-cell">
             <div class="container">
               <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12 d-flex justify-content-around">
+                  <!--Gravatar-->
+                    <div class="d-flex align-items-center">
+                      <img src="https://www.gravatar.com/avatar/{{ people.email|makemd5 }}?s=300" class="rounded-circle" alt="gravatar">
+                    </div>
                   <div class="intro-body">
-                    <p class="intro-title-top">팔로잉 | <b>{{ people.followings.all.count }}</b>   팔로워 | <b>{{ people.followers.all.count }}</b></p>
-
-                    
-                        
-                        <h2 class="intro-title mb-4"><span class="color-b">{{ people.username }}</span> 's profile</h2>
+                    <p class="intro-title-top">팔로잉 | <b>{{ people.followings.all.count }}</b> 팔로워 | <b>{{ people.followers.all.count }}</b></p>
+                        <h2 class="intro-title mb-3"><span class="color-b">{{ people.username }}</span> 's profile</h2>
                         
                         <h4 style="color:white">E-mail : {{ people.email }}</h6>
                         <h4 style="color:white">Year of Birth : {{ people.profile.year_of_birth }}년</h6>
@@ -48,11 +53,15 @@
                                 <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-primary">Follow</a>
                             {% endif %}
                         {% else %}
-                            <a  href="{% url 'accounts:profile' %}"><span class="btn btn-outline-info">프로필 수정</span></a>
-                            <a  href="{% url 'accounts:update' %}"><span class="btn btn-outline-info">회원정보 수정</span></a>
-                            <a  href="{% url 'accounts:change_password' %}"><span class="btn btn-outline-info">비빌번호 수정</span></a>
+                          {% if user.is_superuser %}
+                            <a  href="{% url 'movies:new' %}"><span class="btn btn-outline-warning btn-sm">새 영화 등록</span></a>
+                          {% endif %}
+                            <a  href="{% url 'accounts:profile' %}"><span class="btn btn-outline-info btn-sm">프로필 수정</span></a>
+                            <a  href="{% url 'accounts:update' %}"><span class="btn btn-outline-info btn-sm">회원정보 수정</span></a>
+                            <a  href="{% url 'accounts:change_password' %}"><span class="btn btn-outline-info btn-sm">비빌번호 수정</span></a>
                         {% endif %}
                   </div>
+                  
                 </div>
               </div>
             </div>
@@ -65,11 +74,11 @@
 <h3 class="text-center">{{ people.username }}님이 작성한 댓글</h3>
 <hr>
 {% if people.comment_set.count == 0 %}
-<h6 class=text-center>아직 댓글이 없어요ㅠㅠ 첫번째 댓글을 작성하러 가볼까요?</h6>
-<br>
-<div class="d-flex justify-content-center">
-  <a  href="{% url 'movies:all_movie' %}"><span class="btn btn-outline-danger">모든 영화 보러가기</span></a>
-</div>
+  <h6 class=text-center>아직 댓글이 없어요ㅠㅠ 첫번째 댓글을 작성하러 가볼까요?</h6>
+  <br>
+  <div class="d-flex justify-content-center">
+    <a  href="{% url 'movies:all_movie' %}"><span class="btn btn-outline-danger">모든 영화 보러가기</span></a>
+  </div>
 {% else %}
 <h6 class=text-center>훌륭해요~ {{ people.comment_set.count }}개의 댓글을 작성하였습니다!</h6>
 {% endif %}
@@ -85,5 +94,28 @@
         </div>
     </div>
     {% endfor %}
+</div>
+<hr>
+<h3 class="text-center mt-3">{{ people.username }}님이 좋아요한 영화</h3>
+<div class="mt-5">
+   <div class="d-flex flex-wrap"> 
+    {% for movie in people.like_movies.all %}
+      <div class="instagram_gallery_item m-1">
+        <div class="welcome-single-slide">
+            <a href="{% url 'movies:movie_detail' movie.pk %}">
+                <img style="width:300px"src="{{ movie.poster_url }}" alt="{{ movie.title }} 포스터 사진"></a>
+                    <div class="project_title">
+                <div class="post-date-commnents d-flex">
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.release_year }}</a>
+                    <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.score }}점</a>
+                </div>
+                <a href="{% url 'movies:movie_detail' movie.pk %}">
+                    <h5>{{movie.title}}</h5>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
 </div>
 {% endblock %}

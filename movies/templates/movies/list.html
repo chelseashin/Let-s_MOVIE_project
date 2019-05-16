@@ -3,13 +3,12 @@
 {% block title %}우리 영화할래요?{% endblock %}
 
 {% block css %}
-<style>
+<style type="text/css">
     a { color: white; }
 </style>
 {% endblock %}
     
 {% block content %}
-
 <!--관리자아닌 사람이 new에 접근했을때-->
 {% if messages %}
 	{% for message in messages %}
@@ -47,7 +46,6 @@
   </div>
 
     <!-- ****** Welcome Post Area Start ****** -->
-    
     <h2 class="post-headline text-center" style="color:white">KOREA TOP 10 Movie</h2>
         <div class="instargram_area owl-carousel section_padding_100_0 clearfix" id="portfolio">
         {% for movie in top_ten %}
@@ -88,7 +86,7 @@
                     <a href="{% url 'movies:movie_detail' movie.pk %}">♥ {{ movie.like_users.all.count }}</a>
                 </div>
                 <a href="{% url 'movies:movie_detail' movie.pk %}">
-                    <h5>{{movie.title}}   -   {{movie.score}}</h5>
+                    <h5>{{ movie.title }}   -   {{ movie.score }}</h5>
                 </a>
             </div>
         </div>
