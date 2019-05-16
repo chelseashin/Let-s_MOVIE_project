@@ -61,13 +61,10 @@ def list(request):
     
     # print(rePY(data,request.user.id))
     
-    js2py.translate_file('example.js', 'example.py')
+    # js2py.translate_file('example.js', 'example.py')
     
-    from example import example
-    print(example.javascriptCode(data, 3))
-    
-    
-
+    # from example import example
+    # print(example.javascriptCode(data, 3))
     return render(request, 'movies/list.html', context)
     
 # 모든 영화보기 25개씩 pagination
