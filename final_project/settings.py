@@ -138,4 +138,5 @@ AUTH_USER_MODEL = 'accounts.User'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Activate Django-Heroku.
+
 django_heroku.settings(locals())
