@@ -12,6 +12,10 @@
               margin: 0 0 0rem;
             }
   body { height: 2500px;}
+  .comment_list {
+    border-radius: 90%;
+    border-color: orange;
+  } 
 </style>
 {% endblock %} 
 
@@ -109,27 +113,28 @@
   <p>영화에 대해 평가하려면 로그인하세요!</p>
 </div>
 <div class="d-flex justify-content-center">
-  <a href="{% url 'accounts:login' %}" class="btn btn-outline-info btn-sm" role="button" aria-pressed="true">login</a>
+  <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">login</a>
 </div>
 {% endif %}
 
 <!--alert messages-->
 {% if messages %}
-<h1>메세지</h1>
-<div class="messages">
-{% for message in messages %}
-<div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
-{{ message.message }}
-</div>
-{% endfor %}
-</div>
+  <h1>메세지</h1>
+  <div class="messages">
+  {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+  {{ message.message }}
+    </div>
+  {% endfor %}
+  </div>
 {% endif %} 
 
 <h6>{{ movie.comment_set.count }}개의 댓글이 달렸습니다!</h6>
 <hr> {% for comment in movie.comment_set.all %}
+<div class="comment_list">
 <ul class="list-group list-group-flush">
   <li class="list-group-item">
-    <a style="color:black" href="{% url 'accounts:user_profile' comment.user %}">{{ comment.user }}</a>
+    <a style="color:gray" href="{% url 'accounts:user_profile' comment.user %}">{{ comment.user }}</a>
     <div class="d-flex justify-content-between">
       <div>
         {% if comment.score == 2%}
@@ -142,15 +147,16 @@
         <span style="color:red">★★★★</span>
         {% else %}
         <span style="color:red">★★★★★</span>
-        {% endif %}  
+        {% endif %}
+
         <span>{{ comment.content }}</span>
+        
+
       </div> 
       <div> 
-      
+      <span>{{ comment.created_at }}에 작성</span>
       {% if comment.user == user %}
       <a class="btn btn-success btn-sm" href="{% url 'movies:comment_update' comment.pk  %}">수정</a>
-      
-      
         <form action="{% url 'movies:comment_delete' movie.pk comment.pk %}" method="POST" style="display: inline;">
           {% csrf_token %}
           <input type="submit" value="X" class="btn btn-danger btn-sm">
@@ -160,6 +166,7 @@
     </div>
   </li>
 </ul>
+</div>
 {% empty %}
 <p>첫번째 댓글을 작성해주세요!</p>
 {% endfor %}
