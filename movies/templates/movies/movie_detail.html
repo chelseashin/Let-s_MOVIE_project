@@ -49,10 +49,7 @@
                           {% endif %}
                         </a>
                         <h6> {{ movie.like_users.count }} 명이 좋아합니다.</h6>
-
                         <h5>네티즌평점 <b>{{ movie.score }}</b>점</h5>
-                        
-                        
                        </div>
                        
                        <div class="my-5">
@@ -150,8 +147,6 @@
         {% endif %}
 
         <span>{{ comment.content }}</span>
-        
-
       </div> 
       <div> 
       <span>{{ comment.created_at }}에 작성</span>
@@ -171,9 +166,6 @@
 <p>첫번째 댓글을 작성해주세요!</p>
 {% endfor %}
 </div>
-
-
-
 
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"> 
 </div>
